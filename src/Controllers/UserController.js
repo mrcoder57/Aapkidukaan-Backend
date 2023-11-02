@@ -83,9 +83,34 @@ const userRegistration=async (req, res) => {
   };
 
   const isLoggedIn =(req,res)=>{
-    if(req.user== null){
-        return res.status(403).json({ error: 'you need be logged in'});
+    console.log(req.user)
+    // if(req.user== null){
+    //     console.log('please log in');
+    //     return res.status(403).json({ error: 'you need be logged in'});}
+        
+  }
+  const getUserProfile=async (req, res) => {
+    const userId = req.user.userId; // Get the user ID from the token
+  
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          userid: userId, // Assuming the user ID is stored as 'userid' in the database
+        },
+        include: {
+          products: true, // Include the associated products if needed
+        },
+      });
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Return the user details in the response
+      res.json(user);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching user profile',error: error });
     }
   }
 
-export { getUserProducts, userLogin,userRegistration,isLoggedIn };
+export { getUserProducts, userLogin,userRegistration,isLoggedIn,getUserProfile };
