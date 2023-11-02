@@ -11,9 +11,13 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
+  userid    Int     @id @default(autoincrement())
   email String  @unique
+  username String
   password String
+  role String
+    products  Product[]  @relation(name: "AuthorOfProducts")
+
 }
 
 model Product {
@@ -22,5 +26,10 @@ model Product {
  image     String
  description String
  category  String
+
+ authorName  String?  // Representing the username of the author
+  authorId    Int    // Example default value   // Representing the id of the author
+
+  author      User     @relation(name: "AuthorOfProducts", fields: [authorId], references: [userid])
 }
 

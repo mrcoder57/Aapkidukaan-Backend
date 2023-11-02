@@ -1,10 +1,14 @@
 import express from 'express';
 const router = express.Router();
+import { getUserProducts,userLogin,userRegistration,isLoggedIn} from '../Controllers/UserController.js';
 
-// Define user-related route handlers
-router.post('/user', createUser);
-router.get('/user/:id', getUserById);
-router.put('/user/:id', updateUser);
-router.delete('/user/:id', deleteUser);
+
+router.get('/user/:userId/products', isLoggedIn,getUserProducts);
+
+router.post('/login', userLogin);
+
+router.post('/register', userRegistration);
+
+
 
 export default router;
