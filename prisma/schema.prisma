@@ -17,6 +17,8 @@ model User {
   password String
   role String
     products  Product[]  @relation(name: "AuthorOfProducts")
+    reviews   Review[]  @relation(name: "ReviewAuthor")
+  orders    Order[]   @relation(name: "OrderOwner")
 
 }
 
@@ -26,10 +28,42 @@ model Product {
  image     String
  description String
  category  String
-
+price      Float?
  authorName  String?  // Representing the username of the author
   authorId    Int    // Example default value   // Representing the id of the author
 
   author      User     @relation(name: "AuthorOfProducts", fields: [authorId], references: [userid])
+   reviews      Review[] @relation(name: "ReviewProduct")
+  orders       Order[]  @relation(name: "OrderProduct")
 }
+
+model Review {
+  id        Int       @id @default(autoincrement())
+  text      String
+  rating    Int
+  image     String?
+  // ... other review-related fields
+  authorId  Int       // Representing the id of the author
+  productId Int       // Representing the id of the product
+ 
+username    String?
+  author    User      @relation(name: "ReviewAuthor", fields: [authorId], references: [userid])
+  product   Product   @relation(name: "ReviewProduct", fields: [productId], references: [id])
+}
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  // ... other order-related fields
+  userId    Int      // Representing the id of the user
+  productId Int      // Representing the id of the product
+  price Int // ... other
+username    String?
+  user      User     @relation(name: "OrderOwner", fields: [userId], references: [userid])
+  product   Product  @relation(name: "OrderProduct", fields: [productId], references: [id])
+}
+
+
+
+
+
 

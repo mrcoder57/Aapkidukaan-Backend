@@ -99,6 +99,8 @@ const userRegistration=async (req, res) => {
         },
         include: {
           products: true, // Include the associated products if needed
+          orders: true, // Include the associated orders if needed
+          reviews: true, // Include the associated reviews if needed
         },
       });
   
